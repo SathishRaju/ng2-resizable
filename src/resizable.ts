@@ -1,5 +1,5 @@
-import {ElementRef, Renderer, Input, Component, OnInit} from 'angular2/core';
-import {NgClass, NgFor} from "angular2/common";
+import {ElementRef, Renderer, Input, Component, OnInit} from '@angular/core';
+import {NgClass, NgFor} from "@angular/common";
 
 @Component({
     selector: '[resizable]',
@@ -10,11 +10,11 @@ import {NgClass, NgFor} from "angular2/common";
     directives: [NgClass, NgFor],
     template: `
         <ng-content></ng-content>
-        <div class=grabber [ngClass]="dir" *ngFor="#dir of directions" (mousedown)="onResizeStart($event, dir)"></div>
+        <div class='grabber' [ngClass]="dir" *ngFor="let dir of directions" (mousedown)="onResizeStart($event, dir)"></div>
     `
 })
 export class Resizable implements OnInit {
-    @Input('resizable') directions:Array<String>;
+    @Input directions:Array<String>;
 
     private direction:String;
     private start:number;
@@ -23,12 +23,12 @@ export class Resizable implements OnInit {
 
 
     constructor(private renderer:Renderer, private element:ElementRef) {
-        console.log('resizable init', this.element);
-        renderer.setElementClass(this.element, 'resizable', true);
+        //console.log('resizable init', this.element);
+        renderer.setElementClass(this.element.nativeElement, 'resizable', true);
     }
 
     ngOnInit() {
-        console.log('resize direction: ', this.directions);
+        //console.log('resize direction: ', this.directions);
     }
 
     private onResizeStart(event:MouseEvent, direction:String) {
@@ -44,12 +44,12 @@ export class Resizable implements OnInit {
         event.cancelBubble = true;
         event.returnValue = false;
 
-        console.log("starting resize: ", this.direction, this.start);
+       // console.log("starting resize: ", this.direction, this.start);
     }
 
     private onResizeEnd(event:MouseEvent) {
         if (this.direction) {
-            console.log("onResizeEnd");
+            //console.log("onResizeEnd");
             this.direction = null;
             this.start = 0;
         }
@@ -58,16 +58,16 @@ export class Resizable implements OnInit {
     private onResize(event:MouseEvent) {
         if (this.direction) {
             let offset = this.isHorizontalResize(this.direction) ? this.start - this.getClientX(event) : this.start - this.getClientY(event);
-            console.log('offset', offset);
+           // console.log('offset', offset);
             switch (this.direction) {
                 case 'bottom':
-                    this.renderer.setElementStyle(this.element, 'height', this.height - offset + 'px');
+                    this.renderer.setElementStyle(this.element.nativeElement, 'height', this.height - offset + 'px');
                     break;
                 case 'left':
-                    this.renderer.setElementStyle(this.element, 'width', this.width + offset + 'px');
+                    this.renderer.setElementStyle(this.element.nativeElement, 'width', this.width + offset + 'px');
                     break;
                 case 'right':
-                    this.renderer.setElementStyle(this.element, 'width', this.width - offset + 'px');
+                    this.renderer.setElementStyle(this.element.nativeElement, 'width', this.width - offset + 'px');
                     break;
             }
         }

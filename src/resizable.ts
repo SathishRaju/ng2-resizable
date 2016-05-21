@@ -14,7 +14,7 @@ import {NgClass, NgFor} from "@angular/common";
     `
 })
 export class Resizable implements OnInit {
-    @Input directions:Array<String>;
+    @Input() directions:Array<String>;
 
     private direction:String;
     private start:number;
